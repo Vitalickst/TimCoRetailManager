@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="435e373f-972b-476b-959f-02089f8ef9ca" ChangeDateTime="09/21/2020 18:09:20">
+    <Property Name="ElementName" Value="[dbo].[SaleDetail].[Purcha]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[SaleDetail]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="PurchasePrice" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="5424483a-6c90-48ea-b72f-68e0b2aca0ce" ChangeDateTime="09/21/2020 18:11:07">
+    <Property Name="ElementName" Value="[dbo].[SaleDetail].[Qua]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[SaleDetail]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Quantity" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="45c0143c-cd94-47be-82be-45cdfcf5b0b9" ChangeDateTime="09/29/2020 17:20:27">
+    <Property Name="ElementName" Value="[dbo].[Product].[CreatDate]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Product]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="LastModifed" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="2de547a1-7b8a-45be-b0ae-6af74d8fbf94" ChangeDateTime="09/29/2020 17:20:44">
+    <Property Name="ElementName" Value="[dbo].[Product].[LastModifed]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Product]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CreatDate" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="72dc8a50-3ca2-48cc-a48f-ffd89426f54c" ChangeDateTime="09/29/2020 17:25:40">
+    <Property Name="ElementName" Value="[dbo].[Inventory].[Quntity]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Inventory]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Quantity" />
+  </Operation>
+</Operations>
