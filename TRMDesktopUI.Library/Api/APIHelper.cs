@@ -19,6 +19,14 @@ namespace TRMDesktopUI.Library.Api
             _loggedInUserModel = loggedInUser;
         }
 
+        public HttpClient ApiClient
+        {
+            get
+            {
+                return _apiClient;
+            }
+        }
+
         private void InitializeClient()
         {
             string api = ConfigurationManager.AppSettings["api"];
@@ -50,7 +58,6 @@ namespace TRMDesktopUI.Library.Api
                 {
                     throw new Exception(response.ReasonPhrase);
                 }
-
             }
         }
 
