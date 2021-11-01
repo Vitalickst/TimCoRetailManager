@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using TRMDesktopUI.Library.Api;
+using TRMDesktopUI.Library.Helpers;
 using TRMDesktopUI.Library.Models;
 
 namespace TRMDesktopUI.ViewModels
@@ -10,10 +11,12 @@ namespace TRMDesktopUI.ViewModels
     public class SalesViewModel : Screen
     {
         private IProductEndpoint _productEndpoint;
+        private IConfigHelper _configHelper;
 
-        public SalesViewModel(IProductEndpoint productEndpoint)
+        public SalesViewModel(IProductEndpoint productEndpoint, IConfigHelper configHelper)
         {
             _productEndpoint = productEndpoint;
+            _configHelper = configHelper;
         }
 
         protected override async void OnViewLoaded(object view)
@@ -78,34 +81,44 @@ namespace TRMDesktopUI.ViewModels
             }
         }
 
-        public string SubTotal
+        public string SubTotal => CalculateSubTotal().ToString("C");
+
+        private decimal CalculateSubTotal()
         {
-            get
+            decimal subTotal = 0;
+
+            foreach (var item in Cart)
             {
-                decimal subTotal = 0;
-                foreach (var item in Cart)
-                {
-                    subTotal += (item.Product.RetailPrice * item.QuantityInCart);
-                }
-                return subTotal.ToString("C");
+                subTotal += (item.Product.RetailPrice * item.QuantityInCart);
             }
+
+            return subTotal;
         }
+
+        private decimal CalculateTax()
+        {
+            decimal taxAmount = 0;
+            decimal taxRate = _configHelper.GetTaxRate()/100;
+
+            foreach (var item in Cart)
+            {
+                if (item.Product.IsTaxable)
+                {
+                    taxAmount += (item.Product.RetailPrice * item.QuantityInCart * taxRate);
+                }
+            }
+
+            return taxAmount;
+        }
+
+        public string Tax => CalculateTax().ToString("C");
 
         public string Total
         {
             get
             {
-                // TODO - Replace with calculation
-                return "0.00";
-            }
-        }
-
-        public string Tax
-        {
-            get
-            {
-                // TODO - Replace with calculation
-                return "0.00";
+                decimal total = CalculateSubTotal() + CalculateTax();
+                return total.ToString("C");
             }
         }
 
@@ -147,6 +160,8 @@ namespace TRMDesktopUI.ViewModels
             Products.ResetBindings();
             ItemQuantity = 1;
             NotifyOfPropertyChange(() => SubTotal);
+            NotifyOfPropertyChange(() => Tax);
+            NotifyOfPropertyChange(() => Total);
         }
 
         public bool CanRemoveFromCart
@@ -165,6 +180,8 @@ namespace TRMDesktopUI.ViewModels
         public void RemoveFromCart()
         {
             NotifyOfPropertyChange(() => SubTotal);
+            NotifyOfPropertyChange(() => Tax);
+            NotifyOfPropertyChange(() => Total);
         }
 
         public bool CanCheckOut
