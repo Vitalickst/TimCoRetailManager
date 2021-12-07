@@ -4,20 +4,23 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Microsoft.AspNet.Identity;
 using TRMDataManager.Library.DataAccess;
 using TRMDataManager.Library.Internal.DataAccess;
 using TRMDataManager.Library.Models;
+using TRMDataManager.Models;
 
 namespace TRMDataManager.Controllers
 {
     [Authorize]
-    public class ProductController : ApiController
+    public class SaleController : ApiController
     {
-        // GET api/values
-        public List<ProductModel> Get()
+        public void Post(SaleModel sale)
         {
-            ProductData data = new ProductData();
-            return data.GetProducts();
+            SaleData data = new SaleData();
+            string userId = RequestContext.Principal.Identity.GetUserId();
+
+            data.SaveSale(sale, userId);
         }
     }
 }
