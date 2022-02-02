@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using AutoMapper;
 using Caliburn.Micro;
 using TRMDesktopUI.Library.Api;
@@ -17,20 +20,47 @@ namespace TRMDesktopUI.ViewModels
         private ISaleEndpoint _saleEndpoint;
         private IConfigHelper _configHelper;
         private IMapper _mapper;
+        private readonly StatusInfoViewModel _infoViewModel;
+        private readonly IWindowManager _windowManager;
 
         public SalesViewModel(IProductEndpoint productEndpoint, IConfigHelper configHelper, ISaleEndpoint saleEndpoint, 
-            IMapper mapper)
+            IMapper mapper, StatusInfoViewModel infoViewModel, IWindowManager windowManager)
         {
             _productEndpoint = productEndpoint;
             _configHelper = configHelper;
             _saleEndpoint = saleEndpoint;
             _mapper = mapper;
+            _infoViewModel = infoViewModel;
+            _windowManager = windowManager;
         }
 
         protected override async void OnViewLoaded(object view)
         {
             base.OnViewLoaded(view);
-            await LoadProducts();
+            try
+            {
+                await LoadProducts();
+            } 
+            catch (Exception ex)
+            {
+                dynamic settings = new ExpandoObject();
+                settings.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+                settings.ResizeMode = ResizeMode.NoResize;
+                settings.Title = "System Error";
+
+                if (ex.Message == "Unauthorized")
+                {
+                    _infoViewModel.UpdateMessage("Unauthorized Access", "You do not have permission to interact with the Sales Form.");
+                    _windowManager.ShowDialog(_infoViewModel, null, settings);
+                }
+                else
+                {
+                    _infoViewModel.UpdateMessage("Fatal Exception", ex.Message);
+                    _windowManager.ShowDialog(_infoViewModel, null, settings);
+                }
+
+                TryClose();
+            }
         }
 
         private async Task LoadProducts()
