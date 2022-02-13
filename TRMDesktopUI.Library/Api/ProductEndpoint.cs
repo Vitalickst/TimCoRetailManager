@@ -25,7 +25,8 @@ namespace TRMDesktopUI.Library.Api
                 {
                     var result = await response.Content.ReadAsAsync<List<ProductModel>>();
                     return result;
-                } else
+                } 
+                else
                 {
                     throw new Exception(response.ReasonPhrase);
                 }

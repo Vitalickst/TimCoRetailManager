@@ -20,18 +20,18 @@ namespace TRMDesktopUI.ViewModels
         private ISaleEndpoint _saleEndpoint;
         private IConfigHelper _configHelper;
         private IMapper _mapper;
-        private readonly StatusInfoViewModel _infoViewModel;
-        private readonly IWindowManager _windowManager;
+        private readonly StatusInfoViewModel _status;
+        private readonly IWindowManager _manager;
 
         public SalesViewModel(IProductEndpoint productEndpoint, IConfigHelper configHelper, ISaleEndpoint saleEndpoint, 
-            IMapper mapper, StatusInfoViewModel infoViewModel, IWindowManager windowManager)
+            IMapper mapper, StatusInfoViewModel status, IWindowManager manager)
         {
             _productEndpoint = productEndpoint;
             _configHelper = configHelper;
             _saleEndpoint = saleEndpoint;
             _mapper = mapper;
-            _infoViewModel = infoViewModel;
-            _windowManager = windowManager;
+            _status = status;
+            _manager = manager;
         }
 
         protected override async void OnViewLoaded(object view)
@@ -50,13 +50,13 @@ namespace TRMDesktopUI.ViewModels
 
                 if (ex.Message == "Unauthorized")
                 {
-                    _infoViewModel.UpdateMessage("Unauthorized Access", "You do not have permission to interact with the Sales Form.");
-                    _windowManager.ShowDialog(_infoViewModel, null, settings);
+                    _status.UpdateMessage("Unauthorized Access", "You do not have permission to interact with the Sales Form.");
+                    _manager.ShowDialog(_status, null, settings);
                 }
                 else
                 {
-                    _infoViewModel.UpdateMessage("Fatal Exception", ex.Message);
-                    _windowManager.ShowDialog(_infoViewModel, null, settings);
+                    _status.UpdateMessage("Fatal Exception", ex.Message);
+                    _manager.ShowDialog(_status, null, settings);
                 }
 
                 TryClose();
