@@ -17,6 +17,7 @@ namespace TRMDesktopUI.Library.Api
         {
             InitializeClient();
             _loggedInUserModel = loggedInUser;
+            System.Net.ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
         }
 
         public HttpClient ApiClient
