@@ -11,7 +11,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace TRMDataManager.Library.Internal.DataAccess
 {
-    internal class SqlDataAccess : IDisposable
+    public class SqlDataAccess : IDisposable, ISqlDataAccess
     {
         private readonly IConfiguration _config;
 
@@ -31,7 +31,7 @@ namespace TRMDataManager.Library.Internal.DataAccess
 
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
-                List<T> rows = connection.Query<T>(storeProcedure, parameters, 
+                List<T> rows = connection.Query<T>(storeProcedure, parameters,
                         commandType: CommandType.StoredProcedure).ToList();
 
                 return rows;
@@ -95,11 +95,6 @@ namespace TRMDataManager.Library.Internal.DataAccess
             isClosed = true;
         }
 
-        // Open connection/start transaction method
-        // load using the transaction
-        // save using the transaction
-        // Close connection/stop transaction method
-        // Dispose
         public void Dispose()
         {
             if (isClosed == false)
@@ -107,7 +102,7 @@ namespace TRMDataManager.Library.Internal.DataAccess
                 try
                 {
                     CommitTransaction();
-                } 
+                }
                 catch
                 {
                     // TODO - Log this issue
